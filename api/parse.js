@@ -51,7 +51,7 @@ export default function handler(req, res) {
     return h + ':' + m + ':00';
   }
 
-  const frases = texto.split(/(?:\\.|\\n|\\s+e\\s+)/).map(f => f.trim()).filter(f => f.length > 10);
+  const frases = texto.split(/(?:\.|\n|\s+e\s+)/).map(f => f.trim()).filter(f => f.length > 10);
 
   const dataRegex = /(?:dia\s+)?(\d{1,2}\/\d{1,2}\/\d{4})/;
   const dataMatch = texto.match(dataRegex);
@@ -70,11 +70,11 @@ export default function handler(req, res) {
   const tarefas = [];
 
   for (const frase of frases) {
-    const clienteMatch = frase.match(/(?:cliente\\s+)([a-z0-9\\s\\-&]+)/);
+    const clienteMatch = frase.match(/(?:cliente\s+)([a-z0-9\s&-]+)/i);
     const cliente = clienteMatch ? clienteMatch[1].trim() : "não identificado";
 
     let tempoMin = null;
-    const tempoExplicito = frase.match(/(\\d+)\\s*(minutos|min|hora|h)/);
+    const tempoExplicito = frase.match(/(\d+)\s*(minutos|min|hora|h)/);
     if (tempoExplicito) {
       const valor = parseInt(tempoExplicito[1]);
       const unidade = tempoExplicito[2];
